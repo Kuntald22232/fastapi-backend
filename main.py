@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import item  # Ensure your item.py is in backend/routers folder
+from .routers import item  
+import os
+import uvicorn
 
 # FastAPI instance
 app = FastAPI(title="Item CRUD API", version="1.0")
@@ -25,3 +27,7 @@ async def get_app_details():
 
 # Include the item router
 app.include_router(item.router, prefix="/api", tags=["Items"])
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
