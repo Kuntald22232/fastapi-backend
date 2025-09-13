@@ -8,9 +8,7 @@ import uvicorn
 app = FastAPI(title="Item CRUD API", version="1.0")
 
 # CORS configuration
-origins = [
-    "http://localhost:3000",  # React frontend
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
