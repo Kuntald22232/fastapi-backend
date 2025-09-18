@@ -1,30 +1,27 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import item  
+from backend import items   # <-- backend থেকে items router import
 import os
 import uvicorn
 
-# FastAPI instance
 app = FastAPI(title="Item CRUD API", version="1.0")
 
-# CORS configuration
 origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Allows requests from React frontend
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],     # Allow all HTTP methods
-    allow_headers=["*"],     # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# Root endpoint
 @app.get("/")
 async def get_app_details():
     return {"message": "FastAPI is running..."}
 
-# Include the item router
-app.include_router(item.router, prefix="/api", tags=["Items"])
+# include router
+app.include_router(items.router, prefix="/api", tags=["Items"])
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))

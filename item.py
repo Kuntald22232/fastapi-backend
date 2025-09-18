@@ -1,19 +1,16 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from backend.db import collections
-from bson.objectid import ObjectId
 from backend.utils import serialize_document
+from bson.objectid import ObjectId
 
 router = APIRouter()
 
-# MongoDB collection
 item_collection = collections["items"]
 
-# Pydantic model
 class Item(BaseModel):
     name: str
 
-# Create a new item
 @router.post("/items", status_code=201)
 async def create_item(item: Item):
     if not item.name:
@@ -25,7 +22,6 @@ async def create_item(item: Item):
     except Exception:
         raise HTTPException(status_code=500, detail="Database Error!")
 
-# Get all items
 @router.get("/items")
 async def get_items():
     try:
@@ -34,7 +30,6 @@ async def get_items():
     except Exception:
         raise HTTPException(status_code=500, detail="Invalid Request")
 
-# Update an item by ID
 @router.put("/items/{item_id}")
 async def update_item(item_id: str, item: Item):
     if not item.name:
@@ -50,7 +45,6 @@ async def update_item(item_id: str, item: Item):
     except Exception:
         raise HTTPException(status_code=500, detail="Database Error!")
 
-# Delete an item by ID
 @router.delete("/items/{item_id}", status_code=204)
 async def delete_item(item_id: str):
     try:
